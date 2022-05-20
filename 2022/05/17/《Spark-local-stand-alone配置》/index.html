@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zx-123-git.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="#Spark安装配置 # (一)Spark-local1.需要安装 Anaconda，成功后重启虚拟机（在node1）sh运行Anaconda3-2021.05-Linux-x86_64.sh过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3[&#x2F;root&#x2F;anaconda3] &gt;&gt;&gt; &#x2F;export&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Spark local&amp; stand-alone配置》.md">
+<meta property="og:url" content="https://zx-123-git.github.io/2022/05/17/%E3%80%8ASpark-local-stand-alone%E9%85%8D%E7%BD%AE%E3%80%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#Spark安装配置 # (一)Spark-local1.需要安装 Anaconda，成功后重启虚拟机（在node1）sh运行Anaconda3-2021.05-Linux-x86_64.sh过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3[&#x2F;root&#x2F;anaconda3] &gt;&gt;&gt; &#x2F;export&amp;#">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-05-17T05:51:22.000Z">
+<meta property="article:modified_time" content="2022-05-17T05:54:42.773Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zx-123-git.github.io/2022/05/17/%E3%80%8ASpark-local-stand-alone%E9%85%8D%E7%BD%AE%E3%80%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>《Spark local& stand-alone配置》.md | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zx-123-git.github.io/2022/05/17/%E3%80%8ASpark-local-stand-alone%E9%85%8D%E7%BD%AE%E3%80%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          《Spark local& stand-alone配置》.md
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-17 13:51:22 / Modified: 13:54:42" itemprop="dateCreated datePublished" datetime="2022-05-17T13:51:22+08:00">2022-05-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>#Spark安装配置 #</p>
+<h1 id="一-Spark-local"><a href="#一-Spark-local" class="headerlink" title="(一)Spark-local"></a>(一)Spark-local</h1><h2 id="1-需要安装-Anaconda，成功后重启虚拟机（在node1）"><a href="#1-需要安装-Anaconda，成功后重启虚拟机（在node1）" class="headerlink" title="1.需要安装 Anaconda，成功后重启虚拟机（在node1）"></a>1.需要安装 Anaconda，成功后重启虚拟机（在node1）</h2><p>sh运行Anaconda3-2021.05-Linux-x86_64.sh<br>过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3<br>[&#x2F;root&#x2F;anaconda3] &gt;&gt;&gt; &#x2F;export&#x2F;server&#x2F;anaconda3<br>PREFIX&#x3D;&#x2F;export&#x2F;server&#x2F;anaconda3</p>
+<h2 id="2-脚本运行成功后会出现-base"><a href="#2-脚本运行成功后会出现-base" class="headerlink" title="2.脚本运行成功后会出现(base)"></a>2.脚本运行成功后会出现(base)</h2><h2 id="3-创建虚拟环境-pyspark-基于-python3-8"><a href="#3-创建虚拟环境-pyspark-基于-python3-8" class="headerlink" title="3.创建虚拟环境 pyspark 基于 python3.8"></a>3.创建虚拟环境 pyspark 基于 python3.8</h2><p>conda create -n pyspark python&#x3D;3.8</p>
+<h2 id="4-切换pyspark"><a href="#4-切换pyspark" class="headerlink" title="4.切换pyspark"></a>4.切换pyspark</h2><p>conda activate pyspark</p>
+<h2 id="5-在虚拟环境内安装包"><a href="#5-在虚拟环境内安装包" class="headerlink" title="5.在虚拟环境内安装包"></a>5.在虚拟环境内安装包</h2><h3 id="1-将spark文件上传并解压至-x2F-export-x2F-server"><a href="#1-将spark文件上传并解压至-x2F-export-x2F-server" class="headerlink" title="1.将spark文件上传并解压至&#x2F;export&#x2F;server"></a>1.将spark文件上传并解压至&#x2F;export&#x2F;server</h3><p>tar -zxvf spark-3.2.0-bin-hadoop3.2.tar.gz -C &#x2F;export&#x2F;server</p>
+<h3 id="2-建立软链接"><a href="#2-建立软链接" class="headerlink" title="2.建立软链接"></a>2.建立软链接</h3><h3 id="3-添加环境变量"><a href="#3-添加环境变量" class="headerlink" title="3.添加环境变量"></a>3.添加环境变量</h3><h3 id="4-vi-bashrc将JAVA-HOME和PYSPARK-PYTHON添加进去-："><a href="#4-vi-bashrc将JAVA-HOME和PYSPARK-PYTHON添加进去-：" class="headerlink" title="4.vi .bashrc将JAVA_HOME和PYSPARK_PYTHON添加进去 ###："></a>4.vi .bashrc将JAVA_HOME和PYSPARK_PYTHON添加进去 ###：</h3><p>并刷新环境变量文件 source &#x2F;etc&#x2F;profile<br>                   source ~&#x2F;.bashrc</p>
+<h3 id="5-打开spark："><a href="#5-打开spark：" class="headerlink" title="5.打开spark："></a>5.打开spark：</h3><p>&#x2F;export&#x2F;server&#x2F;anaconda3&#x2F;envs&#x2F;pyspark&#x2F;bin&#x2F;pyspark</p>
+<h3 id="6-临时端口4040："><a href="#6-临时端口4040：" class="headerlink" title="6.临时端口4040："></a>6.临时端口4040：</h3><h1 id="二-Spark-Standalone"><a href="#二-Spark-Standalone" class="headerlink" title="(二)Spark-Standalone"></a>(二)Spark-Standalone</h1><h2 id="1-安装Anaconda至node2和node3并重启"><a href="#1-安装Anaconda至node2和node3并重启" class="headerlink" title="1.安装Anaconda至node2和node3并重启"></a>1.安装Anaconda至node2和node3并重启</h2><p>sh运行Anaconda3-2021.05-Linux-x86_64.sh<br>过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3<br>[&#x2F;root&#x2F;anaconda3] &gt;&gt;&gt; &#x2F;export&#x2F;server&#x2F;anaconda3<br>PREFIX&#x3D;&#x2F;export&#x2F;server&#x2F;anaconda3</p>
+<h2 id="2-脚本运行成功后会出现-base-1"><a href="#2-脚本运行成功后会出现-base-1" class="headerlink" title="2.脚本运行成功后会出现(base)"></a>2.脚本运行成功后会出现(base)</h2><h2 id="3-将node1节点的-bashrc和-x2F-etc-x2F-profile文件分发给node2和node3-source刷新两个文件"><a href="#3-将node1节点的-bashrc和-x2F-etc-x2F-profile文件分发给node2和node3-source刷新两个文件" class="headerlink" title="3.将node1节点的.bashrc和&#x2F;etc&#x2F;profile文件分发给node2和node3 source刷新两个文件"></a>3.将node1节点的.bashrc和&#x2F;etc&#x2F;profile文件分发给node2和node3 source刷新两个文件</h2><p>scp -r <del>&#x2F;.bashrc root@node2:</del>&#x2F;<br>scp -r <del>&#x2F;.bashrc root@node3:</del>&#x2F;<br>scp -r &#x2F;etc&#x2F;profile root@node2:&#x2F;etc&#x2F;profile<br>scp -r &#x2F;etc&#x2F;profile root@node3:&#x2F;etc&#x2F;profile<br>source &#x2F;etc&#x2F;profile<br>source ~&#x2F;.bashrc</p>
+<h2 id="4-同node1节点-创建基于python-x3D-3-8的虚拟环境pyspark"><a href="#4-同node1节点-创建基于python-x3D-3-8的虚拟环境pyspark" class="headerlink" title="4.同node1节点 创建基于python&#x3D;3.8的虚拟环境pyspark"></a>4.同node1节点 创建基于python&#x3D;3.8的虚拟环境pyspark</h2><p>安装包 ##<br>pip install pyhive pyspark jieba -i<br><a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
+<h2 id="5-node1节点修改spark配置文件"><a href="#5-node1节点修改spark配置文件" class="headerlink" title="5.node1节点修改spark配置文件"></a>5.node1节点修改spark配置文件</h2><p>cd &#x2F;export&#x2F;server&#x2F;spark&#x2F;conf<br>1)修改文件名works.template：cp works.template works<br>vi works：将localhost删除并添加如下内容：</p>
+<p>2)修改文件名spark-env.sh.template并配置相关内容：<br>cp spark-env.sh.template spark-env.sh<br>vi spark-env.sh</p>
+<p>3)修改文件名spark-defaults.conf.template并配置相关内容：<br>cp spark-defaults.conf.template spark-defaults.conf<br>vi spark-defaults.conf</p>
+<p>4)配置 log4j.properties 文件第19行将INFO改为WARN<br>目的：输出日志, 设置级别为 WARN 只输出警告和错误日志，INFO 则为输出所有信息，多数为无用信息</p>
+<h2 id="6-将node1配置完成的spark分发到node2和node3上"><a href="#6-将node1配置完成的spark分发到node2和node3上" class="headerlink" title="6.将node1配置完成的spark分发到node2和node3上"></a>6.将node1配置完成的spark分发到node2和node3上</h2><p>cd &#x2F;export&#x2F;server<br>scp -r &#x2F;export&#x2F;server&#x2F;spark-3.2.0-bin-hadoop3.2&#x2F; slave1:$PWD<br>scp -r &#x2F;export&#x2F;server&#x2F;spark-3.2.0-bin-hadoop3.2&#x2F; slave2:$PWD</p>
+<h2 id="7-在node2和node3添加spark软链接"><a href="#7-在node2和node3添加spark软链接" class="headerlink" title="7.在node2和node3添加spark软链接"></a>7.在node2和node3添加spark软链接</h2><p>ln -s &#x2F;export&#x2F;server&#x2F;spark-3.2.0-bin-hadoop3.2 &#x2F;export&#x2F;server&#x2F;spark</p>
+<h2 id="8-启动历史服务并查看WebUI界面-18080-node1-18080"><a href="#8-启动历史服务并查看WebUI界面-18080-node1-18080" class="headerlink" title="8.启动历史服务并查看WebUI界面(18080 ##):  node1:18080"></a>8.启动历史服务并查看WebUI界面(18080 ##):  node1:18080</h2><p>cd &#x2F;export&#x2F;server&#x2F;spark&#x2F;sbin<br>.&#x2F;start-history-server.sh</p>
+<h2 id="9-启动Spark的Master和Worker进程"><a href="#9-启动Spark的Master和Worker进程" class="headerlink" title="9.启动Spark的Master和Worker进程"></a>9.启动Spark的Master和Worker进程</h2><p>cd &#x2F;export&#x2F;server&#x2F;spark&#x2F;sbin<br>启动全部master和worker：.&#x2F;start-all.sh<br>停止命令：.&#x2F;stop-all.sh<br>启动当前机器的master：.&#x2F;start-master.sh<br>启动当前机器的worker：.&#x2F;start-worker.sh<br>停止当前机器的master：.&#x2F;stop-master.sh<br>停止当前机器的worker：.&#x2F;stop-worker.sh</p>
+<p>访问WebUI界面：node1:8080(可能会顺延至8081)</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/15/%E3%80%8ASpark%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E3%80%8B/" rel="prev" title="《Spark基础环境配置》">
+      <i class="fa fa-chevron-left"></i> 《Spark基础环境配置》
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/17/%E3%80%8ASpark-HA-Yarn%E9%85%8D%E7%BD%AE%E3%80%8B/" rel="next" title="《Spark HA & Yarn配置》">
+      《Spark HA & Yarn配置》 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80-Spark-local"><span class="nav-number">1.</span> <span class="nav-text">(一)Spark-local</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%9C%80%E8%A6%81%E5%AE%89%E8%A3%85-Anaconda%EF%BC%8C%E6%88%90%E5%8A%9F%E5%90%8E%E9%87%8D%E5%90%AF%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%88%E5%9C%A8node1%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.需要安装 Anaconda，成功后重启虚拟机（在node1）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%84%9A%E6%9C%AC%E8%BF%90%E8%A1%8C%E6%88%90%E5%8A%9F%E5%90%8E%E4%BC%9A%E5%87%BA%E7%8E%B0-base"><span class="nav-number">1.2.</span> <span class="nav-text">2.脚本运行成功后会出现(base)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83-pyspark-%E5%9F%BA%E4%BA%8E-python3-8"><span class="nav-number">1.3.</span> <span class="nav-text">3.创建虚拟环境 pyspark 基于 python3.8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%88%87%E6%8D%A2pyspark"><span class="nav-number">1.4.</span> <span class="nav-text">4.切换pyspark</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%9C%A8%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E5%86%85%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">1.5.</span> <span class="nav-text">5.在虚拟环境内安装包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%B0%86spark%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%B9%B6%E8%A7%A3%E5%8E%8B%E8%87%B3-x2F-export-x2F-server"><span class="nav-number">1.5.1.</span> <span class="nav-text">1.将spark文件上传并解压至&#x2F;export&#x2F;server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BB%BA%E7%AB%8B%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="nav-number">1.5.2.</span> <span class="nav-text">2.建立软链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.5.3.</span> <span class="nav-text">3.添加环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-vi-bashrc%E5%B0%86JAVA-HOME%E5%92%8CPYSPARK-PYTHON%E6%B7%BB%E5%8A%A0%E8%BF%9B%E5%8E%BB-%EF%BC%9A"><span class="nav-number">1.5.4.</span> <span class="nav-text">4.vi .bashrc将JAVA_HOME和PYSPARK_PYTHON添加进去 ###：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%89%93%E5%BC%80spark%EF%BC%9A"><span class="nav-number">1.5.5.</span> <span class="nav-text">5.打开spark：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E4%B8%B4%E6%97%B6%E7%AB%AF%E5%8F%A34040%EF%BC%9A"><span class="nav-number">1.5.6.</span> <span class="nav-text">6.临时端口4040：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-Spark-Standalone"><span class="nav-number">2.</span> <span class="nav-text">(二)Spark-Standalone</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85Anaconda%E8%87%B3node2%E5%92%8Cnode3%E5%B9%B6%E9%87%8D%E5%90%AF"><span class="nav-number">2.1.</span> <span class="nav-text">1.安装Anaconda至node2和node3并重启</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%84%9A%E6%9C%AC%E8%BF%90%E8%A1%8C%E6%88%90%E5%8A%9F%E5%90%8E%E4%BC%9A%E5%87%BA%E7%8E%B0-base-1"><span class="nav-number">2.2.</span> <span class="nav-text">2.脚本运行成功后会出现(base)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%B0%86node1%E8%8A%82%E7%82%B9%E7%9A%84-bashrc%E5%92%8C-x2F-etc-x2F-profile%E6%96%87%E4%BB%B6%E5%88%86%E5%8F%91%E7%BB%99node2%E5%92%8Cnode3-source%E5%88%B7%E6%96%B0%E4%B8%A4%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">3.将node1节点的.bashrc和&#x2F;etc&#x2F;profile文件分发给node2和node3 source刷新两个文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%90%8Cnode1%E8%8A%82%E7%82%B9-%E5%88%9B%E5%BB%BA%E5%9F%BA%E4%BA%8Epython-x3D-3-8%E7%9A%84%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83pyspark"><span class="nav-number">2.4.</span> <span class="nav-text">4.同node1节点 创建基于python&#x3D;3.8的虚拟环境pyspark</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-node1%E8%8A%82%E7%82%B9%E4%BF%AE%E6%94%B9spark%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.5.</span> <span class="nav-text">5.node1节点修改spark配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%B0%86node1%E9%85%8D%E7%BD%AE%E5%AE%8C%E6%88%90%E7%9A%84spark%E5%88%86%E5%8F%91%E5%88%B0node2%E5%92%8Cnode3%E4%B8%8A"><span class="nav-number">2.6.</span> <span class="nav-text">6.将node1配置完成的spark分发到node2和node3上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E5%9C%A8node2%E5%92%8Cnode3%E6%B7%BB%E5%8A%A0spark%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="nav-number">2.7.</span> <span class="nav-text">7.在node2和node3添加spark软链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E5%90%AF%E5%8A%A8%E5%8E%86%E5%8F%B2%E6%9C%8D%E5%8A%A1%E5%B9%B6%E6%9F%A5%E7%9C%8BWebUI%E7%95%8C%E9%9D%A2-18080-node1-18080"><span class="nav-number">2.8.</span> <span class="nav-text">8.启动历史服务并查看WebUI界面(18080 ##):  node1:18080</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E5%90%AF%E5%8A%A8Spark%E7%9A%84Master%E5%92%8CWorker%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.9.</span> <span class="nav-text">9.启动Spark的Master和Worker进程</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zx-123-git.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="(一)Spark-Standalone-HA1.更换zookeeper-3.7.0版本2.修改spark-env.sh配置文件删除SPARK_MASTER_HOST&#x3D;node1增加内容： 3.将spark-env.sh分发到node2和node3scp spark-env.sh node2:&#x2F;export&#x2F;server&#x2F;spark&#x2F;conf&#x2F;scp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Spark HA &amp; Yarn配置》">
+<meta property="og:url" content="https://zx-123-git.github.io/2022/05/17/%E3%80%8ASpark-HA-Yarn%E9%85%8D%E7%BD%AE%E3%80%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="(一)Spark-Standalone-HA1.更换zookeeper-3.7.0版本2.修改spark-env.sh配置文件删除SPARK_MASTER_HOST&#x3D;node1增加内容： 3.将spark-env.sh分发到node2和node3scp spark-env.sh node2:&#x2F;export&#x2F;server&#x2F;spark&#x2F;conf&#x2F;scp">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-05-17T05:56:20.000Z">
+<meta property="article:modified_time" content="2022-05-17T05:57:15.160Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zx-123-git.github.io/2022/05/17/%E3%80%8ASpark-HA-Yarn%E9%85%8D%E7%BD%AE%E3%80%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>《Spark HA & Yarn配置》 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://zx-123-git.github.io/2022/05/17/%E3%80%8ASpark-HA-Yarn%E9%85%8D%E7%BD%AE%E3%80%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          《Spark HA & Yarn配置》
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-17 13:56:20 / Modified: 13:57:15" itemprop="dateCreated datePublished" datetime="2022-05-17T13:56:20+08:00">2022-05-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一-Spark-Standalone-HA"><a href="#一-Spark-Standalone-HA" class="headerlink" title="(一)Spark-Standalone-HA"></a>(一)Spark-Standalone-HA</h1><h2 id="1-更换zookeeper-3-7-0版本"><a href="#1-更换zookeeper-3-7-0版本" class="headerlink" title="1.更换zookeeper-3.7.0版本"></a>1.更换zookeeper-3.7.0版本</h2><h2 id="2-修改spark-env-sh配置文件"><a href="#2-修改spark-env-sh配置文件" class="headerlink" title="2.修改spark-env.sh配置文件"></a>2.修改spark-env.sh配置文件</h2><p>删除<code>SPARK_MASTER_HOST=node1</code><br>增加内容：</p>
+<h2 id="3-将spark-env-sh分发到node2和node3"><a href="#3-将spark-env-sh分发到node2和node3" class="headerlink" title="3.将spark-env.sh分发到node2和node3"></a>3.将spark-env.sh分发到node2和node3</h2><p>scp spark-env.sh node2:&#x2F;export&#x2F;server&#x2F;spark&#x2F;conf&#x2F;<br>scp spark-env.sh node3:&#x2F;export&#x2F;server&#x2F;spark&#x2F;conf&#x2F;</p>
+<h2 id="4-启动当前StandAlone集群-之前需开启配置完成的zookeeper"><a href="#4-启动当前StandAlone集群-之前需开启配置完成的zookeeper" class="headerlink" title="4.启动当前StandAlone集群(之前需开启配置完成的zookeeper)"></a>4.启动当前StandAlone集群(之前需开启配置完成的zookeeper)</h2><p>cd &#x2F;export&#x2F;server&#x2F;spark&#x2F;sbin&#x2F;start-all.sh</p>
+<p>如下：node1:8080端口状态会变成ALIVE</p>
+<p>在node2上启动一个备用的master进程(8080端口可能会发生顺延)<br>如下端口为8082：</p>
+<p>关闭node1的master进程如下：<br>node2状态切换为ALIVE</p>
+<p>提交一个spark任务到当前<code>ALIVE</code>master上:<br>bin&#x2F;spark-submit –master spark:&#x2F;&#x2F;node1:7077 &#x2F;export&#x2F;server&#x2F;spark&#x2F;examples&#x2F;src&#x2F;main&#x2F;python&#x2F;pi.py 1000<br>在提交成功后，将<code>ALIVE</code>master kill掉后，不会影响程序</p>
+<h2 id="5-结论：HA模式下，主备切换不会影响正在运行的程序"><a href="#5-结论：HA模式下，主备切换不会影响正在运行的程序" class="headerlink" title="5.结论：HA模式下，主备切换不会影响正在运行的程序"></a>5.结论：HA模式下，主备切换不会影响正在运行的程序</h2><h1 id="二-Spark-On-YARN"><a href="#二-Spark-On-YARN" class="headerlink" title="(二)Spark On YARN"></a>(二)Spark On YARN</h1><h2 id="1-在spark-env-sh配置文件中添加HADOOP-CONF-DIR和-DIR-YARN-CONF-DIR"><a href="#1-在spark-env-sh配置文件中添加HADOOP-CONF-DIR和-DIR-YARN-CONF-DIR" class="headerlink" title="1.在spark-env.sh配置文件中添加HADOOP_CONF_DIR和 DIR_YARN_CONF_DIR"></a>1.在spark-env.sh配置文件中添加HADOOP_CONF_DIR和 DIR_YARN_CONF_DIR</h2><h2 id="2-启动yarn集群历史服务器-需先开启hadoop集群"><a href="#2-启动yarn集群历史服务器-需先开启hadoop集群" class="headerlink" title="2.启动yarn集群历史服务器(需先开启hadoop集群)"></a>2.启动yarn集群历史服务器(需先开启hadoop集群)</h2><p>cd &#x2F;export&#x2F;server&#x2F;hadoop&#x2F;sbin&#x2F;<br>.&#x2F;mr-jobhistory-daemon.sh start historyserver</p>
+<h2 id="3-访问WebUI界面-node1-19888-如下："><a href="#3-访问WebUI界面-node1-19888-如下：" class="headerlink" title="3.访问WebUI界面  node1:19888 如下："></a>3.访问WebUI界面  node1:19888 如下：</h2><h2 id="4-验证client模式："><a href="#4-验证client模式：" class="headerlink" title="4.验证client模式："></a>4.验证client模式：</h2><p>&#x2F;export&#x2F;server&#x2F;spark&#x2F;bin&#x2F;spark-submit –master yarn –deploy-mode client –driver-memory 512m –executor-memory 512m –num-executors 3 –total-executor-cores 3 &#x2F;export&#x2F;server&#x2F;spark&#x2F;examples&#x2F;src&#x2F;main&#x2F;python&#x2F;pi.py 3</p>
+<p>进入WebUI node1:8088查看</p>
+<h2 id="5-验证cluster"><a href="#5-验证cluster" class="headerlink" title="5.验证cluster"></a>5.验证cluster</h2><p>&#x2F;export&#x2F;server&#x2F;spark&#x2F;bin&#x2F;spark-submit –master yarn –deploy-mode cluster –driver-memory 512m –executor-memory 512m –num-executors 3 –total-executor-cores 3 &#x2F;export&#x2F;server&#x2F;spark&#x2F;examples&#x2F;src&#x2F;main&#x2F;python&#x2F;pi.py 3</p>
+<p>如需查看数值，可去日志中查找</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/17/%E3%80%8ASpark-local-stand-alone%E9%85%8D%E7%BD%AE%E3%80%8B/" rel="prev" title="《Spark local& stand-alone配置》.md">
+      <i class="fa fa-chevron-left"></i> 《Spark local& stand-alone配置》.md
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/20/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80-Spark-Standalone-HA"><span class="nav-number">1.</span> <span class="nav-text">(一)Spark-Standalone-HA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%9B%B4%E6%8D%A2zookeeper-3-7-0%E7%89%88%E6%9C%AC"><span class="nav-number">1.1.</span> <span class="nav-text">1.更换zookeeper-3.7.0版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BF%AE%E6%94%B9spark-env-sh%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">2.修改spark-env.sh配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%B0%86spark-env-sh%E5%88%86%E5%8F%91%E5%88%B0node2%E5%92%8Cnode3"><span class="nav-number">1.3.</span> <span class="nav-text">3.将spark-env.sh分发到node2和node3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%90%AF%E5%8A%A8%E5%BD%93%E5%89%8DStandAlone%E9%9B%86%E7%BE%A4-%E4%B9%8B%E5%89%8D%E9%9C%80%E5%BC%80%E5%90%AF%E9%85%8D%E7%BD%AE%E5%AE%8C%E6%88%90%E7%9A%84zookeeper"><span class="nav-number">1.4.</span> <span class="nav-text">4.启动当前StandAlone集群(之前需开启配置完成的zookeeper)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E7%BB%93%E8%AE%BA%EF%BC%9AHA%E6%A8%A1%E5%BC%8F%E4%B8%8B%EF%BC%8C%E4%B8%BB%E5%A4%87%E5%88%87%E6%8D%A2%E4%B8%8D%E4%BC%9A%E5%BD%B1%E5%93%8D%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.5.</span> <span class="nav-text">5.结论：HA模式下，主备切换不会影响正在运行的程序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-Spark-On-YARN"><span class="nav-number">2.</span> <span class="nav-text">(二)Spark On YARN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9C%A8spark-env-sh%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%AD%E6%B7%BB%E5%8A%A0HADOOP-CONF-DIR%E5%92%8C-DIR-YARN-CONF-DIR"><span class="nav-number">2.1.</span> <span class="nav-text">1.在spark-env.sh配置文件中添加HADOOP_CONF_DIR和 DIR_YARN_CONF_DIR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%90%AF%E5%8A%A8yarn%E9%9B%86%E7%BE%A4%E5%8E%86%E5%8F%B2%E6%9C%8D%E5%8A%A1%E5%99%A8-%E9%9C%80%E5%85%88%E5%BC%80%E5%90%AFhadoop%E9%9B%86%E7%BE%A4"><span class="nav-number">2.2.</span> <span class="nav-text">2.启动yarn集群历史服务器(需先开启hadoop集群)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%AE%BF%E9%97%AEWebUI%E7%95%8C%E9%9D%A2-node1-19888-%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-number">2.3.</span> <span class="nav-text">3.访问WebUI界面  node1:19888 如下：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%AA%8C%E8%AF%81client%E6%A8%A1%E5%BC%8F%EF%BC%9A"><span class="nav-number">2.4.</span> <span class="nav-text">4.验证client模式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E9%AA%8C%E8%AF%81cluster"><span class="nav-number">2.5.</span> <span class="nav-text">5.验证cluster</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
