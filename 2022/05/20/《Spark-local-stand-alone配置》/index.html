@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="#Spark安装配置 # (一)Spark-local1.需要安装 Anaconda，成功后重启虚拟机（在node1）sh运行Anaconda3-2021.05-Linux-x86_64.sh过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3[&#x2F;root&#x2F;anaconda3] &gt;&gt;&gt; &#x2F;export&amp;#">
+  <meta name="description" content="#Spark安装配置 # (一)Spark-local1.需要安装 Anaconda，成功后重启虚拟机（在node1）sh运行Anaconda3-2021.05-Linux-x86_64.sh过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3 12[&#x2F;root&#x2F;anaconda3] &gt;&gt;&gt; &#x2F;export&#x2F;server&#x2F;anacon">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《Spark local&amp; stand-alone配置》">
 <meta property="og:url" content="http://example.com/2022/05/20/%E3%80%8ASpark-local-stand-alone%E9%85%8D%E7%BD%AE%E3%80%8B/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="#Spark安装配置 # (一)Spark-local1.需要安装 Anaconda，成功后重启虚拟机（在node1）sh运行Anaconda3-2021.05-Linux-x86_64.sh过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3[&#x2F;root&#x2F;anaconda3] &gt;&gt;&gt; &#x2F;export&amp;#">
+<meta property="og:description" content="#Spark安装配置 # (一)Spark-local1.需要安装 Anaconda，成功后重启虚拟机（在node1）sh运行Anaconda3-2021.05-Linux-x86_64.sh过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3 12[&#x2F;root&#x2F;anaconda3] &gt;&gt;&gt; &#x2F;export&#x2F;server&#x2F;anacon">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-05-20T02:53:14.000Z">
-<meta property="article:modified_time" content="2022-05-20T02:54:43.811Z">
+<meta property="article:modified_time" content="2022-05-22T06:24:24.910Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -172,10 +172,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-05-20 10:53:14 / Modified: 10:54:43" itemprop="dateCreated datePublished" datetime="2022-05-20T10:53:14+08:00">2022-05-20</time>
+              <time title="Created: 2022-05-20 10:53:14" itemprop="dateCreated datePublished" datetime="2022-05-20T10:53:14+08:00">2022-05-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-22 14:24:24" itemprop="dateModified" datetime="2022-05-22T14:24:24+08:00">2022-05-22</time>
+              </span>
 
           
 
@@ -189,22 +195,60 @@
 
       
         <p>#Spark安装配置 #</p>
-<h1 id="一-Spark-local"><a href="#一-Spark-local" class="headerlink" title="(一)Spark-local"></a>(一)Spark-local</h1><h2 id="1-需要安装-Anaconda，成功后重启虚拟机（在node1）"><a href="#1-需要安装-Anaconda，成功后重启虚拟机（在node1）" class="headerlink" title="1.需要安装 Anaconda，成功后重启虚拟机（在node1）"></a>1.需要安装 Anaconda，成功后重启虚拟机（在node1）</h2><p>sh运行Anaconda3-2021.05-Linux-x86_64.sh<br>过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3<br>[&#x2F;root&#x2F;anaconda3] &gt;&gt;&gt; &#x2F;export&#x2F;server&#x2F;anaconda3<br>PREFIX&#x3D;&#x2F;export&#x2F;server&#x2F;anaconda3</p>
-<h2 id="2-脚本运行成功后会出现-base"><a href="#2-脚本运行成功后会出现-base" class="headerlink" title="2.脚本运行成功后会出现(base)"></a>2.脚本运行成功后会出现(base)</h2><h2 id="3-创建虚拟环境-pyspark-基于-python3-8"><a href="#3-创建虚拟环境-pyspark-基于-python3-8" class="headerlink" title="3.创建虚拟环境 pyspark 基于 python3.8"></a>3.创建虚拟环境 pyspark 基于 python3.8</h2><p>conda create -n pyspark python&#x3D;3.8</p>
-<h2 id="4-切换pyspark"><a href="#4-切换pyspark" class="headerlink" title="4.切换pyspark"></a>4.切换pyspark</h2><p>conda activate pyspark</p>
-<h2 id="5-在虚拟环境内安装包"><a href="#5-在虚拟环境内安装包" class="headerlink" title="5.在虚拟环境内安装包"></a>5.在虚拟环境内安装包</h2><h3 id="1-将spark文件上传并解压至-x2F-export-x2F-server"><a href="#1-将spark文件上传并解压至-x2F-export-x2F-server" class="headerlink" title="1.将spark文件上传并解压至&#x2F;export&#x2F;server"></a>1.将spark文件上传并解压至&#x2F;export&#x2F;server</h3><p>tar -zxvf spark-3.2.0-bin-hadoop3.2.tar.gz -C &#x2F;export&#x2F;server</p>
-<h3 id="2-建立软链接"><a href="#2-建立软链接" class="headerlink" title="2.建立软链接"></a>2.建立软链接</h3><h3 id="3-添加环境变量"><a href="#3-添加环境变量" class="headerlink" title="3.添加环境变量"></a>3.添加环境变量</h3><h3 id="4-vi-bashrc将JAVA-HOME和PYSPARK-PYTHON添加进去-："><a href="#4-vi-bashrc将JAVA-HOME和PYSPARK-PYTHON添加进去-：" class="headerlink" title="4.vi .bashrc将JAVA_HOME和PYSPARK_PYTHON添加进去 ###："></a>4.vi .bashrc将JAVA_HOME和PYSPARK_PYTHON添加进去 ###：</h3><p>并刷新环境变量文件 source &#x2F;etc&#x2F;profile<br>                   source ~&#x2F;.bashrc</p>
-<h3 id="5-打开spark："><a href="#5-打开spark：" class="headerlink" title="5.打开spark："></a>5.打开spark：</h3><p>&#x2F;export&#x2F;server&#x2F;anaconda3&#x2F;envs&#x2F;pyspark&#x2F;bin&#x2F;pyspark</p>
-<h3 id="6-临时端口4040："><a href="#6-临时端口4040：" class="headerlink" title="6.临时端口4040："></a>6.临时端口4040：</h3><h1 id="二-Spark-Standalone"><a href="#二-Spark-Standalone" class="headerlink" title="(二)Spark-Standalone"></a>(二)Spark-Standalone</h1><h2 id="1-安装Anaconda至node2和node3并重启"><a href="#1-安装Anaconda至node2和node3并重启" class="headerlink" title="1.安装Anaconda至node2和node3并重启"></a>1.安装Anaconda至node2和node3并重启</h2><p>sh运行Anaconda3-2021.05-Linux-x86_64.sh<br>过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3<br>[&#x2F;root&#x2F;anaconda3] &gt;&gt;&gt; &#x2F;export&#x2F;server&#x2F;anaconda3<br>PREFIX&#x3D;&#x2F;export&#x2F;server&#x2F;anaconda3</p>
-<h2 id="2-脚本运行成功后会出现-base-1"><a href="#2-脚本运行成功后会出现-base-1" class="headerlink" title="2.脚本运行成功后会出现(base)"></a>2.脚本运行成功后会出现(base)</h2><h2 id="3-将node1节点的-bashrc和-x2F-etc-x2F-profile文件分发给node2和node3-source刷新两个文件"><a href="#3-将node1节点的-bashrc和-x2F-etc-x2F-profile文件分发给node2和node3-source刷新两个文件" class="headerlink" title="3.将node1节点的.bashrc和&#x2F;etc&#x2F;profile文件分发给node2和node3 source刷新两个文件"></a>3.将node1节点的.bashrc和&#x2F;etc&#x2F;profile文件分发给node2和node3 source刷新两个文件</h2><p>scp -r <del>&#x2F;.bashrc root@node2:</del>&#x2F;<br>scp -r <del>&#x2F;.bashrc root@node3:</del>&#x2F;<br>scp -r &#x2F;etc&#x2F;profile root@node2:&#x2F;etc&#x2F;profile<br>scp -r &#x2F;etc&#x2F;profile root@node3:&#x2F;etc&#x2F;profile<br>source &#x2F;etc&#x2F;profile<br>source ~&#x2F;.bashrc</p>
-<h2 id="4-同node1节点-创建基于python-x3D-3-8的虚拟环境pyspark"><a href="#4-同node1节点-创建基于python-x3D-3-8的虚拟环境pyspark" class="headerlink" title="4.同node1节点 创建基于python&#x3D;3.8的虚拟环境pyspark"></a>4.同node1节点 创建基于python&#x3D;3.8的虚拟环境pyspark</h2><p>安装包 ##<br>pip install pyhive pyspark jieba -i<br><a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
+<h1 id="一-Spark-local"><a href="#一-Spark-local" class="headerlink" title="(一)Spark-local"></a>(一)Spark-local</h1><h2 id="1-需要安装-Anaconda，成功后重启虚拟机（在node1）"><a href="#1-需要安装-Anaconda，成功后重启虚拟机（在node1）" class="headerlink" title="1.需要安装 Anaconda，成功后重启虚拟机（在node1）"></a>1.需要安装 Anaconda，成功后重启虚拟机（在node1）</h2><p>sh运行Anaconda3-2021.05-Linux-x86_64.sh<br>过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[/root/anaconda3] &gt;&gt;&gt; /export/server/anaconda3 </span><br><span class="line">PREFIX=/export/server/anaconda3</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="2-脚本运行成功后会出现-base"><a href="#2-脚本运行成功后会出现-base" class="headerlink" title="2.脚本运行成功后会出现(base)"></a>2.脚本运行成功后会出现(base)</h2><h2 id="3-创建虚拟环境-pyspark-基于-python3-8"><a href="#3-创建虚拟环境-pyspark-基于-python3-8" class="headerlink" title="3.创建虚拟环境 pyspark 基于 python3.8"></a>3.创建虚拟环境 pyspark 基于 python3.8</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n pyspark python=3.8</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="4-切换pyspark"><a href="#4-切换pyspark" class="headerlink" title="4.切换pyspark"></a>4.切换pyspark</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda activate pyspark</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-在虚拟环境内安装包"><a href="#5-在虚拟环境内安装包" class="headerlink" title="5.在虚拟环境内安装包"></a>5.在虚拟环境内安装包</h2><h3 id="1-将spark文件上传并解压至-x2F-export-x2F-server"><a href="#1-将spark文件上传并解压至-x2F-export-x2F-server" class="headerlink" title="1.将spark文件上传并解压至&#x2F;export&#x2F;server"></a>1.将spark文件上传并解压至&#x2F;export&#x2F;server</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf spark-3.2.0-bin-hadoop3.2.tar.gz -C /export/server</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2-建立软链接"><a href="#2-建立软链接" class="headerlink" title="2.建立软链接"></a>2.建立软链接</h3><h3 id="3-添加环境变量"><a href="#3-添加环境变量" class="headerlink" title="3.添加环境变量"></a>3.添加环境变量</h3><h3 id="4-vi-bashrc将JAVA-HOME和PYSPARK-PYTHON添加进去-："><a href="#4-vi-bashrc将JAVA-HOME和PYSPARK-PYTHON添加进去-：" class="headerlink" title="4.vi .bashrc将JAVA_HOME和PYSPARK_PYTHON添加进去 ###："></a>4.vi .bashrc将JAVA_HOME和PYSPARK_PYTHON添加进去 ###：</h3><p>并刷新环境变量文件 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-打开spark："><a href="#5-打开spark：" class="headerlink" title="5.打开spark："></a>5.打开spark：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/export/server/anaconda3/envs/pyspark/bin/pyspark</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-临时端口4040："><a href="#6-临时端口4040：" class="headerlink" title="6.临时端口4040："></a>6.临时端口4040：</h3><h1 id="二-Spark-Standalone"><a href="#二-Spark-Standalone" class="headerlink" title="(二)Spark-Standalone"></a>(二)Spark-Standalone</h1><h2 id="1-安装Anaconda至node2和node3并重启"><a href="#1-安装Anaconda至node2和node3并重启" class="headerlink" title="1.安装Anaconda至node2和node3并重启"></a>1.安装Anaconda至node2和node3并重启</h2><p>sh运行Anaconda3-2021.05-Linux-x86_64.sh<br>过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[/root/anaconda3] &gt;&gt;&gt; /export/server/anaconda3 </span><br><span class="line">PREFIX=/export/server/anaconda3</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="2-脚本运行成功后会出现-base-1"><a href="#2-脚本运行成功后会出现-base-1" class="headerlink" title="2.脚本运行成功后会出现(base)"></a>2.脚本运行成功后会出现(base)</h2><h2 id="3-将node1节点的-bashrc和-x2F-etc-x2F-profile文件分发给node2和node3-source刷新两个文件"><a href="#3-将node1节点的-bashrc和-x2F-etc-x2F-profile文件分发给node2和node3-source刷新两个文件" class="headerlink" title="3.将node1节点的.bashrc和&#x2F;etc&#x2F;profile文件分发给node2和node3 source刷新两个文件"></a>3.将node1节点的.bashrc和&#x2F;etc&#x2F;profile文件分发给node2和node3 source刷新两个文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">scp -r ~/.bashrc root@node2:~/ </span><br><span class="line">scp -r ~/.bashrc root@node3:~/</span><br><span class="line">scp -r /etc/profile root@node2:/etc/profile </span><br><span class="line">scp -r /etc/profile root@node3:/etc/profile</span><br><span class="line">source /etc/profile                 </span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="4-同node1节点-创建基于python-x3D-3-8的虚拟环境pyspark"><a href="#4-同node1节点-创建基于python-x3D-3-8的虚拟环境pyspark" class="headerlink" title="4.同node1节点 创建基于python&#x3D;3.8的虚拟环境pyspark"></a>4.同node1节点 创建基于python&#x3D;3.8的虚拟环境pyspark</h2><p>安装包 ##</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install pyhive pyspark jieba -i</span><br><span class="line">https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+
+
 <h2 id="5-node1节点修改spark配置文件"><a href="#5-node1节点修改spark配置文件" class="headerlink" title="5.node1节点修改spark配置文件"></a>5.node1节点修改spark配置文件</h2><p>cd &#x2F;export&#x2F;server&#x2F;spark&#x2F;conf<br>1)修改文件名works.template：cp works.template works<br>vi works：将localhost删除并添加如下内容：</p>
-<p>2)修改文件名spark-env.sh.template并配置相关内容：<br>cp spark-env.sh.template spark-env.sh<br>vi spark-env.sh</p>
-<p>3)修改文件名spark-defaults.conf.template并配置相关内容：<br>cp spark-defaults.conf.template spark-defaults.conf<br>vi spark-defaults.conf</p>
+<p>2)修改文件名spark-env.sh.template并配置相关内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp spark-env.sh.template spark-env.sh</span><br><span class="line">vi spark-env.sh</span><br></pre></td></tr></table></figure>
+
+<p>3)修改文件名spark-defaults.conf.template并配置相关内容：<br>cp spark-defaults.conf.template spark-defaults.conf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi spark-defaults.conf</span><br></pre></td></tr></table></figure>
+
 <p>4)配置 log4j.properties 文件第19行将INFO改为WARN<br>目的：输出日志, 设置级别为 WARN 只输出警告和错误日志，INFO 则为输出所有信息，多数为无用信息</p>
-<h2 id="6-将node1配置完成的spark分发到node2和node3上"><a href="#6-将node1配置完成的spark分发到node2和node3上" class="headerlink" title="6.将node1配置完成的spark分发到node2和node3上"></a>6.将node1配置完成的spark分发到node2和node3上</h2><p>cd &#x2F;export&#x2F;server<br>scp -r &#x2F;export&#x2F;server&#x2F;spark-3.2.0-bin-hadoop3.2&#x2F; slave1:$PWD<br>scp -r &#x2F;export&#x2F;server&#x2F;spark-3.2.0-bin-hadoop3.2&#x2F; slave2:$PWD</p>
-<h2 id="7-在node2和node3添加spark软链接"><a href="#7-在node2和node3添加spark软链接" class="headerlink" title="7.在node2和node3添加spark软链接"></a>7.在node2和node3添加spark软链接</h2><p>ln -s &#x2F;export&#x2F;server&#x2F;spark-3.2.0-bin-hadoop3.2 &#x2F;export&#x2F;server&#x2F;spark</p>
-<h2 id="8-启动历史服务并查看WebUI界面-18080-node1-18080"><a href="#8-启动历史服务并查看WebUI界面-18080-node1-18080" class="headerlink" title="8.启动历史服务并查看WebUI界面(18080 ##):  node1:18080"></a>8.启动历史服务并查看WebUI界面(18080 ##):  node1:18080</h2><p>cd &#x2F;export&#x2F;server&#x2F;spark&#x2F;sbin<br>.&#x2F;start-history-server.sh</p>
+<h2 id="6-将node1配置完成的spark分发到node2和node3上"><a href="#6-将node1配置完成的spark分发到node2和node3上" class="headerlink" title="6.将node1配置完成的spark分发到node2和node3上"></a>6.将node1配置完成的spark分发到node2和node3上</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server</span><br><span class="line">scp -r /export/server/spark-3.2.0-bin-hadoop3.2/ slave1:$PWD </span><br><span class="line">scp -r /export/server/spark-3.2.0-bin-hadoop3.2/ slave2:$PWD</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="7-在node2和node3添加spark软链接"><a href="#7-在node2和node3添加spark软链接" class="headerlink" title="7.在node2和node3添加spark软链接"></a>7.在node2和node3添加spark软链接</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /export/server/spark-3.2.0-bin-hadoop3.2 /export/server/spark</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="8-启动历史服务并查看WebUI界面-18080-node1-18080"><a href="#8-启动历史服务并查看WebUI界面-18080-node1-18080" class="headerlink" title="8.启动历史服务并查看WebUI界面(18080 ##):  node1:18080"></a>8.启动历史服务并查看WebUI界面(18080 ##):  node1:18080</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/spark/sbin </span><br><span class="line">./start-history-server.sh</span><br></pre></td></tr></table></figure>
+
+
+
+
 <h2 id="9-启动Spark的Master和Worker进程"><a href="#9-启动Spark的Master和Worker进程" class="headerlink" title="9.启动Spark的Master和Worker进程"></a>9.启动Spark的Master和Worker进程</h2><p>cd &#x2F;export&#x2F;server&#x2F;spark&#x2F;sbin<br>启动全部master和worker：.&#x2F;start-all.sh<br>停止命令：.&#x2F;stop-all.sh<br>启动当前机器的master：.&#x2F;start-master.sh<br>启动当前机器的worker：.&#x2F;start-worker.sh<br>停止当前机器的master：.&#x2F;stop-master.sh<br>停止当前机器的worker：.&#x2F;stop-worker.sh</p>
 <p>访问WebUI界面：node1:8080(可能会顺延至8081)</p>
 
