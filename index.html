@@ -400,7 +400,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-22 14:10:35" itemprop="dateModified" datetime="2022-05-22T14:10:35+08:00">2022-05-22</time>
+                <time title="Modified: 2022-05-22 14:18:40" itemprop="dateModified" datetime="2022-05-22T14:18:40+08:00">2022-05-22</time>
               </span>
 
           
@@ -417,13 +417,14 @@
           <h1 id="安装配置JDK"><a href="#安装配置JDK" class="headerlink" title="安装配置JDK"></a>安装配置JDK</h1><h2 id="1-mkdir-pv-创建软件安装目录-x2F-export-x2F-server"><a href="#1-mkdir-pv-创建软件安装目录-x2F-export-x2F-server" class="headerlink" title="1.mkdir -pv 创建软件安装目录 &#x2F;export&#x2F;server"></a>1.mkdir -pv 创建软件安装目录 &#x2F;export&#x2F;server</h2><h2 id="2-将jdk-8u241-linux-x64-tar-gz-上传并解解压至"><a href="#2-将jdk-8u241-linux-x64-tar-gz-上传并解解压至" class="headerlink" title="2.将jdk-8u241-linux-x64.tar.gz 上传并解解压至"></a>2.将jdk-8u241-linux-x64.tar.gz 上传并解解压至</h2><p>&#x2F;export&#x2F;server 命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf jdk-8u241-linux-x64.tar.gz -C /export/server</span><br></pre></td></tr></table></figure>
 
-<h2 id="3-配置环境变量"><a href="#3-配置环境变量" class="headerlink" title="3.配置环境变量:"></a>3.配置环境变量:</h2><h2 id="4-java-version查看jdk版本"><a href="#4-java-version查看jdk版本" class="headerlink" title="4.java -version查看jdk版本"></a>4.java -version查看jdk版本</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(1).png"></p>
+<h2 id="3-配置环境变量"><a href="#3-配置环境变量" class="headerlink" title="3.配置环境变量:"></a>3.配置环境变量:</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(1).png"></p>
+<h2 id="4-java-version查看jdk版本"><a href="#4-java-version查看jdk版本" class="headerlink" title="4.java -version查看jdk版本"></a>4.java -version查看jdk版本</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(2).png"></p>
 <h2 id="5-将node1中的java和环境变量传至node2和node3"><a href="#5-将node1中的java和环境变量传至node2和node3" class="headerlink" title="5.将node1中的java和环境变量传至node2和node3"></a>5.将node1中的java和环境变量传至node2和node3</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scp -r /export/server/jdk1.8.0_241 root@node2:/export/server</span><br><span class="line">scp -r /export/server/jdk1.8.0_241 root@node3:/export/server</span><br><span class="line">scp -r /etc/profile root@node2:/etc/profile</span><br><span class="line">scp -r /etc/profile root@node3:/etc/profile</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="6-在node1、node2、node3创建软链接"><a href="#6-在node1、node2、node3创建软链接" class="headerlink" title="6.在node1、node2、node3创建软链接"></a>6.在node1、node2、node3创建软链接</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /export/server/jdk1.8.0_241/ jdk</span><br></pre></td></tr></table></figure>
 
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (3).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(3).png"></p>
 <h2 id="7-在三台虚拟机上执行-source-x2F-etc-x2F-profile重载环境变量"><a href="#7-在三台虚拟机上执行-source-x2F-etc-x2F-profile重载环境变量" class="headerlink" title="7.在三台虚拟机上执行 source &#x2F;etc&#x2F;profile重载环境变量"></a>7.在三台虚拟机上执行 source &#x2F;etc&#x2F;profile重载环境变量</h2><h1 id="安装配置hadoop"><a href="#安装配置hadoop" class="headerlink" title="安装配置hadoop"></a>安装配置hadoop</h1><table>
 <thead>
 <tr>
@@ -450,22 +451,22 @@
 <h2 id="2-配置Hadoop环境变量"><a href="#2-配置Hadoop环境变量" class="headerlink" title="2.配置Hadoop环境变量"></a>2.配置Hadoop环境变量</h2><p>将Hadoop添加到环境变量</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line"></span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
 
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (4).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(4).png"></p>
 <h2 id="3-分发hadoop环境变量给node2、node3"><a href="#3-分发hadoop环境变量给node2、node3" class="headerlink" title="3.分发hadoop环境变量给node2、node3"></a>3.分发hadoop环境变量给node2、node3</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r /etc/profile root@node2:$PWD</span><br><span class="line">scp -r /etc/profile root@node3:$PWD</span><br></pre></td></tr></table></figure>
 
 
 
 <h2 id="4-相关配置"><a href="#4-相关配置" class="headerlink" title="4.相关配置"></a>4.相关配置</h2><p>（1）hadoop-env.sh</p>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (5).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(5).png"></p>
 <p>（2）core-site.xml</p>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (6).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(6).png"></p>
 <p>（3）hdfs-site.xml</p>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (7).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(7).png"></p>
 <p>（4）mapred-site.xml</p>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (8).png)（5)yarn-site.xml</p>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (9).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(8).png"></p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(9).png"></p>
 <p>（6）Workers（填写且仅保留以下内容）</p>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (10).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(10).png"></p>
 <h2 id="5-分发同步hadoop安装包"><a href="#5-分发同步hadoop安装包" class="headerlink" title="5.分发同步hadoop安装包"></a>5.分发同步hadoop安装包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server</span><br><span class="line">scp -r hadoop-3.3.0 root@node2:$PWD</span><br><span class="line">scp -r hadoop-3.3.0 root@node3:$PWD</span><br></pre></td></tr></table></figure>
 
 
@@ -475,13 +476,13 @@
 <h2 id="7-脚本一键启动"><a href="#7-脚本一键启动" class="headerlink" title="7.脚本一键启动"></a>7.脚本一键启动</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start-dfs.sh</span><br><span class="line">start-yarn.sh</span><br></pre></td></tr></table></figure>
 
 <p>Jps：</p>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (11).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(11).png"></p>
 <p>Web  UI页面</p>
 <ul>
 <li>HDFS集群：<a target="_blank" rel="noopener" href="http://node1:9870/">http://node1:9870/</a></li>
 <li>YARN集群：<a target="_blank" rel="noopener" href="http://node1:8088/">http://node1:8088/</a></li>
 </ul>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (12).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(12).png"></p>
 <h1 id="安装配置zookeeper"><a href="#安装配置zookeeper" class="headerlink" title="安装配置zookeeper"></a>安装配置zookeeper</h1><h2 id="1-配置hosts：（三台服务器均需修改）"><a href="#1-配置hosts：（三台服务器均需修改）" class="headerlink" title="1.配置hosts：（三台服务器均需修改）"></a>1.配置hosts：（三台服务器均需修改）</h2><table>
 <thead>
 <tr>
@@ -508,25 +509,25 @@
 </tbody></table>
 <h2 id="2-上传zookeeper安装包、解压安装包"><a href="#2-上传zookeeper安装包、解压安装包" class="headerlink" title="2.上传zookeeper安装包、解压安装包"></a>2.上传zookeeper安装包、解压安装包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /export/software</span><br><span class="line">tar -zxvf zookeeper.tar.gz -C /export/server/</span><br><span class="line">cd /export/server/</span><br><span class="line">ln -s zookeeper/ zookeeper</span><br></pre></td></tr></table></figure>
 
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (13).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(13).png"></p>
 <h2 id="3-修改配置文件"><a href="#3-修改配置文件" class="headerlink" title="3.修改配置文件"></a>3.修改配置文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  (1)复制zoo.cfg / 配置zoo.cfg</span><br><span class="line">cd /export/server/zookeeper/conf/</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
 
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (14).png)</p>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (15).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(14).png"></p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(15).png"></p>
 <h2 id="4-添加myid配置"><a href="#4-添加myid配置" class="headerlink" title="4.添加myid配置"></a>4.添加myid配置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /export/server/zookeeper/zkdatas/</span><br><span class="line">echo 1 &gt; /export/server/zookeeper/zkdatas/myid</span><br></pre></td></tr></table></figure>
 
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (16).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(16).png"></p>
 <h2 id="5-分发并修改myid的值"><a href="#5-分发并修改myid的值" class="headerlink" title="5.分发并修改myid的值"></a>5.分发并修改myid的值</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/</span><br><span class="line">scp -r /export/server/zookeeper-3.4.6/ node2:$PWD </span><br><span class="line">scp -r /export/server/zookeeper-3.4.6/ node3:$PWD</span><br></pre></td></tr></table></figure>
 
 
-<h2 id="6-对node2和node3进行软连接并对myid进行修改"><a href="#6-对node2和node3进行软连接并对myid进行修改" class="headerlink" title="6.对node2和node3进行软连接并对myid进行修改"></a>6.对node2和node3进行软连接并对myid进行修改</h2><p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (17).png)</p>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (18).png)</p>
-<h2 id="7-配置环境变量、脚本一键启动zookeeper"><a href="#7-配置环境变量、脚本一键启动zookeeper" class="headerlink" title="7.配置环境变量、脚本一键启动zookeeper"></a>7.配置环境变量、脚本一键启动zookeeper</h2><p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (19).png)</p>
+<h2 id="6-对node2和node3进行软连接并对myid进行修改"><a href="#6-对node2和node3进行软连接并对myid进行修改" class="headerlink" title="6.对node2和node3进行软连接并对myid进行修改"></a>6.对node2和node3进行软连接并对myid进行修改</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(17).png"></p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(18).png"></p>
+<h2 id="7-配置环境变量、脚本一键启动zookeeper"><a href="#7-配置环境变量、脚本一键启动zookeeper" class="headerlink" title="7.配置环境变量、脚本一键启动zookeeper"></a>7.配置环境变量、脚本一键启动zookeeper</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(19).png"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
 
 <p>一键启动zookeeper脚本</p>
-<p>![](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (20).png)</p>
-<p>![《Spark基础环境配置》1 (21)](G:\myblog.deploy_git\archives\《Spark基础环境配置》\《Spark基础环境配置》1 (21).png)</p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(20).png"></p>
+<p><img src="https://github.com/zx-123-git/holle_world/blob/main/images/(21).png"></p>
 
       
     </div>
