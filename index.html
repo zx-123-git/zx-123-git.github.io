@@ -176,7 +176,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-22 14:39:51" itemprop="dateModified" datetime="2022-05-22T14:39:51+08:00">2022-05-22</time>
+                <time title="Modified: 2022-05-25 10:54:16" itemprop="dateModified" datetime="2022-05-25T10:54:16+08:00">2022-05-25</time>
               </span>
 
           
@@ -191,37 +191,37 @@
 
       
           <h1 id="一-Spark-Standalone-HA"><a href="#一-Spark-Standalone-HA" class="headerlink" title="(一)Spark-Standalone-HA"></a>(一)Spark-Standalone-HA</h1><h2 id="1-更换zookeeper-3-7-0版本"><a href="#1-更换zookeeper-3-7-0版本" class="headerlink" title="1.更换zookeeper-3.7.0版本"></a>1.更换zookeeper-3.7.0版本</h2><h2 id="2-修改spark-env-sh配置文件"><a href="#2-修改spark-env-sh配置文件" class="headerlink" title="2.修改spark-env.sh配置文件"></a>2.修改spark-env.sh配置文件</h2><p>删除<code>SPARK_MASTER_HOST=node1</code><br>增加内容：</p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(1).png"></p>
+<p><img src="/../image/third/(1).png"></p>
 <h2 id="3-将spark-env-sh分发到node2和node3"><a href="#3-将spark-env-sh分发到node2和node3" class="headerlink" title="3.将spark-env.sh分发到node2和node3"></a>3.将spark-env.sh分发到node2和node3</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp spark-env.sh node2:/export/server/spark/conf/</span><br><span class="line">scp spark-env.sh node3:/export/server/spark/conf/</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="4-启动当前StandAlone集群-之前需开启配置完成的zookeeper"><a href="#4-启动当前StandAlone集群-之前需开启配置完成的zookeeper" class="headerlink" title="4.启动当前StandAlone集群(之前需开启配置完成的zookeeper)"></a>4.启动当前StandAlone集群(之前需开启配置完成的zookeeper)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/spark/sbin/start-all.sh</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(2).png"></p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(3).png"></p>
+<p><img src="/../image/third/(2).png"></p>
+<p><img src="/../image/third/(3).png"></p>
 <p>如下：node1:8080端口状态会变成ALIVE</p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(4).png"></p>
+<p><img src="/../image/third/(4).png"></p>
 <p>在node2上启动一个备用的master进程(8080端口可能会发生顺延)<br>如下端口为8082：</p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(5).png"></p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(6).png"></p>
+<p><img src="/../image/third/(5).png"></p>
+<p><img src="/../image/third/(6).png"></p>
 <p>关闭node1的master进程如下：<br>node2状态切换为ALIVE</p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(7).png"></p>
+<p><img src="/../image/third/(7).png"></p>
 <p>提交一个spark任务到当前<code>ALIVE</code>master上:<br>bin&#x2F;spark-submit –master spark:&#x2F;&#x2F;node1:7077 &#x2F;export&#x2F;server&#x2F;spark&#x2F;examples&#x2F;src&#x2F;main&#x2F;python&#x2F;pi.py 1000<br>在提交成功后，将<code>ALIVE</code>master kill掉后，不会影响程序</p>
-<h2 id="5-结论：HA模式下，主备切换不会影响正在运行的程序"><a href="#5-结论：HA模式下，主备切换不会影响正在运行的程序" class="headerlink" title="5.结论：HA模式下，主备切换不会影响正在运行的程序"></a>5.结论：HA模式下，主备切换不会影响正在运行的程序</h2><h1 id="二-Spark-On-YARN"><a href="#二-Spark-On-YARN" class="headerlink" title="(二)Spark On YARN"></a>(二)Spark On YARN</h1><h2 id="1-在spark-env-sh配置文件中添加HADOOP-CONF-DIR和-DIR-YARN-CONF-DIR"><a href="#1-在spark-env-sh配置文件中添加HADOOP-CONF-DIR和-DIR-YARN-CONF-DIR" class="headerlink" title="1.在spark-env.sh配置文件中添加HADOOP_CONF_DIR和 DIR_YARN_CONF_DIR"></a>1.在spark-env.sh配置文件中添加HADOOP_CONF_DIR和 DIR_YARN_CONF_DIR</h2><p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(8).png"></p>
+<h2 id="5-结论：HA模式下，主备切换不会影响正在运行的程序"><a href="#5-结论：HA模式下，主备切换不会影响正在运行的程序" class="headerlink" title="5.结论：HA模式下，主备切换不会影响正在运行的程序"></a>5.结论：HA模式下，主备切换不会影响正在运行的程序</h2><h1 id="二-Spark-On-YARN"><a href="#二-Spark-On-YARN" class="headerlink" title="(二)Spark On YARN"></a>(二)Spark On YARN</h1><h2 id="1-在spark-env-sh配置文件中添加HADOOP-CONF-DIR和-DIR-YARN-CONF-DIR"><a href="#1-在spark-env-sh配置文件中添加HADOOP-CONF-DIR和-DIR-YARN-CONF-DIR" class="headerlink" title="1.在spark-env.sh配置文件中添加HADOOP_CONF_DIR和 DIR_YARN_CONF_DIR"></a>1.在spark-env.sh配置文件中添加HADOOP_CONF_DIR和 DIR_YARN_CONF_DIR</h2><p><img src="/../image/third/(8).png"></p>
 <h2 id="2-启动yarn集群历史服务器-需先开启hadoop集群"><a href="#2-启动yarn集群历史服务器-需先开启hadoop集群" class="headerlink" title="2.启动yarn集群历史服务器(需先开启hadoop集群)"></a>2.启动yarn集群历史服务器(需先开启hadoop集群)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/hadoop/sbin/</span><br><span class="line">./mr-jobhistory-daemon.sh start historyserver</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(9).png"></p>
-<h2 id="3-访问WebUI界面-node1-19888-如下："><a href="#3-访问WebUI界面-node1-19888-如下：" class="headerlink" title="3.访问WebUI界面  node1:19888 如下："></a>3.访问WebUI界面  node1:19888 如下：</h2><p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(10).png"></p>
+<p><img src="/../image/third/(9).png"></p>
+<h2 id="3-访问WebUI界面-node1-19888-如下："><a href="#3-访问WebUI界面-node1-19888-如下：" class="headerlink" title="3.访问WebUI界面  node1:19888 如下："></a>3.访问WebUI界面  node1:19888 如下：</h2><p><img src="/../image/third/(10).png"></p>
 <h2 id="4-验证client模式："><a href="#4-验证client模式：" class="headerlink" title="4.验证client模式："></a>4.验证client模式：</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/export/server/spark/bin/spark-submit --master yarn --deploy-mode client --driver-memory 512m --executor-memory 512m --num-executors 3 --total-executor-cores 3 /export/server/spark/examples/src/main/python/pi.py 3</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(11).png"></p>
+<p><img src="/../image/third/(11).png"></p>
 <p>进入WebUI node1:8088查看</p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(12).png"></p>
+<p><img src="/../image/third/(12).png"></p>
 <h2 id="5-验证cluster"><a href="#5-验证cluster" class="headerlink" title="5.验证cluster"></a>5.验证cluster</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/export/server/spark/bin/spark-submit --master yarn --deploy-mode cluster --driver-memory 512m --executor-memory 512m --num-executors 3 --total-executor-cores 3 /export/server/spark/examples/src/main/python/pi.py 3</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(13).png"></p>
+<p><img src="/../image/third/(13).png"></p>
 <p>如需查看数值，可去日志中查找</p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/third/(14).png"></p>
+<p><img src="https://github.com/zx-123-git/zx-123-git.github.io/blob/master/image/third/(14).png"></p>
 
       
     </div>
@@ -272,7 +272,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-22 15:01:52" itemprop="dateModified" datetime="2022-05-22T15:01:52+08:00">2022-05-22</time>
+                <time title="Modified: 2022-05-25 10:47:09" itemprop="dateModified" datetime="2022-05-25T10:47:09+08:00">2022-05-25</time>
               </span>
 
           
@@ -289,31 +289,31 @@
           <h1 id="Spark安装配置"><a href="#Spark安装配置" class="headerlink" title="Spark安装配置"></a>Spark安装配置</h1><h1 id="一-Spark-local"><a href="#一-Spark-local" class="headerlink" title="(一)Spark-local"></a>(一)Spark-local</h1><h2 id="1-需要安装-Anaconda，成功后重启虚拟机（在node1）"><a href="#1-需要安装-Anaconda，成功后重启虚拟机（在node1）" class="headerlink" title="1.需要安装 Anaconda，成功后重启虚拟机（在node1）"></a>1.需要安装 Anaconda，成功后重启虚拟机（在node1）</h2><p>sh运行Anaconda3-2021.05-Linux-x86_64.sh<br>过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[/root/anaconda3] &gt;&gt;&gt; /export/server/anaconda3 </span><br><span class="line">PREFIX=/export/server/anaconda3</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-脚本运行成功后会出现-base"><a href="#2-脚本运行成功后会出现-base" class="headerlink" title="2.脚本运行成功后会出现(base)"></a>2.脚本运行成功后会出现(base)</h2><p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(1).png"></p>
+<h2 id="2-脚本运行成功后会出现-base"><a href="#2-脚本运行成功后会出现-base" class="headerlink" title="2.脚本运行成功后会出现(base)"></a>2.脚本运行成功后会出现(base)</h2><p><img src="/../image/second/(1).png"></p>
 <h2 id="3-创建虚拟环境-pyspark-基于-python3-8"><a href="#3-创建虚拟环境-pyspark-基于-python3-8" class="headerlink" title="3.创建虚拟环境 pyspark 基于 python3.8"></a>3.创建虚拟环境 pyspark 基于 python3.8</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n pyspark python=3.8</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="4-切换pyspark"><a href="#4-切换pyspark" class="headerlink" title="4.切换pyspark"></a>4.切换pyspark</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda activate pyspark</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(2).png"></p>
-<h2 id="5-在虚拟环境内安装包"><a href="#5-在虚拟环境内安装包" class="headerlink" title="5.在虚拟环境内安装包"></a>5.在虚拟环境内安装包</h2><p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(3).png"></p>
+<p><img src="/../image/second/(2).png"></p>
+<h2 id="5-在虚拟环境内安装包"><a href="#5-在虚拟环境内安装包" class="headerlink" title="5.在虚拟环境内安装包"></a>5.在虚拟环境内安装包</h2><p><img src="/../image/second/(3).png"></p>
 <h3 id="1-将spark文件上传并解压至-x2F-export-x2F-server"><a href="#1-将spark文件上传并解压至-x2F-export-x2F-server" class="headerlink" title="1.将spark文件上传并解压至&#x2F;export&#x2F;server"></a>1.将spark文件上传并解压至&#x2F;export&#x2F;server</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf spark-3.2.0-bin-hadoop3.2.tar.gz -C /export/server</span><br></pre></td></tr></table></figure>
 
-<h3 id="2-建立软链接"><a href="#2-建立软链接" class="headerlink" title="2.建立软链接"></a>2.建立软链接</h3><p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(4).png"></p>
-<h3 id="3-添加环境变量"><a href="#3-添加环境变量" class="headerlink" title="3.添加环境变量"></a>3.添加环境变量</h3><p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(5).png"></p>
+<h3 id="2-建立软链接"><a href="#2-建立软链接" class="headerlink" title="2.建立软链接"></a>2.建立软链接</h3><p><img src="/../image/second/(4).png"></p>
+<h3 id="3-添加环境变量"><a href="#3-添加环境变量" class="headerlink" title="3.添加环境变量"></a>3.添加环境变量</h3><p><img src="/../image/second/(5).png"></p>
 <h3 id="4-vi-bashrc将JAVA-HOME和PYSPARK-PYTHON添加进去-："><a href="#4-vi-bashrc将JAVA-HOME和PYSPARK-PYTHON添加进去-：" class="headerlink" title="4.vi .bashrc将JAVA_HOME和PYSPARK_PYTHON添加进去 ###："></a>4.vi .bashrc将JAVA_HOME和PYSPARK_PYTHON添加进去 ###：</h3><p>并刷新环境变量文件 </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(6).png"></p>
+<p><img src="/../image/second/(6).png"></p>
 <h3 id="5-打开spark："><a href="#5-打开spark：" class="headerlink" title="5.打开spark："></a>5.打开spark：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/export/server/anaconda3/envs/pyspark/bin/pyspark</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(7).png"></p>
-<h3 id="6-临时端口4040："><a href="#6-临时端口4040：" class="headerlink" title="6.临时端口4040："></a>6.临时端口4040：</h3><p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(8).png"></p>
+<p><img src="/../image/second/(7).png"></p>
+<h3 id="6-临时端口4040："><a href="#6-临时端口4040：" class="headerlink" title="6.临时端口4040："></a>6.临时端口4040：</h3><p><img src="/../image/second/(8).png"></p>
 <h1 id="二-Spark-Standalone"><a href="#二-Spark-Standalone" class="headerlink" title="(二)Spark-Standalone"></a>(二)Spark-Standalone</h1><h2 id="1-安装Anaconda至node2和node3并重启"><a href="#1-安装Anaconda至node2和node3并重启" class="headerlink" title="1.安装Anaconda至node2和node3并重启"></a>1.安装Anaconda至node2和node3并重启</h2><p>sh运行Anaconda3-2021.05-Linux-x86_64.sh<br>过程中需要添加路径至&#x2F;export&#x2F;server&#x2F;anaconda3</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[/root/anaconda3] &gt;&gt;&gt; /export/server/anaconda3 </span><br><span class="line">PREFIX=/export/server/anaconda3</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-脚本运行成功后会出现-base-1"><a href="#2-脚本运行成功后会出现-base-1" class="headerlink" title="2.脚本运行成功后会出现(base)"></a>2.脚本运行成功后会出现(base)</h2><p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(9).png"></p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(10).png"></p>
+<h2 id="2-脚本运行成功后会出现-base-1"><a href="#2-脚本运行成功后会出现-base-1" class="headerlink" title="2.脚本运行成功后会出现(base)"></a>2.脚本运行成功后会出现(base)</h2><p><img src="/../image/second/(9).png"></p>
+<p><img src="/../image/second/(10).png"></p>
 <h2 id="3-将node1节点的-bashrc和-x2F-etc-x2F-profile文件分发给node2和node3-source刷新两个文件"><a href="#3-将node1节点的-bashrc和-x2F-etc-x2F-profile文件分发给node2和node3-source刷新两个文件" class="headerlink" title="3.将node1节点的.bashrc和&#x2F;etc&#x2F;profile文件分发给node2和node3 source刷新两个文件"></a>3.将node1节点的.bashrc和&#x2F;etc&#x2F;profile文件分发给node2和node3 source刷新两个文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">scp -r ~/.bashrc root@node2:~/ </span><br><span class="line">scp -r ~/.bashrc root@node3:~/</span><br><span class="line">scp -r /etc/profile root@node2:/etc/profile </span><br><span class="line">scp -r /etc/profile root@node3:/etc/profile</span><br><span class="line">source /etc/profile                 </span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
 
 
@@ -322,32 +322,32 @@
 
 
 <h2 id="5-node1节点修改spark配置文件"><a href="#5-node1节点修改spark配置文件" class="headerlink" title="5.node1节点修改spark配置文件"></a>5.node1节点修改spark配置文件</h2><p>cd &#x2F;export&#x2F;server&#x2F;spark&#x2F;conf<br>1)修改文件名works.template：cp works.template works<br>vi works：将localhost删除并添加如下内容：</p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(11).png"></p>
+<p><img src="/../image/second/(11).png"></p>
 <p>2)修改文件名spark-env.sh.template并配置相关内容：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp spark-env.sh.template spark-env.sh</span><br><span class="line">vi spark-env.sh</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(12).png"></p>
+<p><img src="/../image/second/(12).png"></p>
 <p>3)修改文件名spark-defaults.conf.template并配置相关内容：<br>cp spark-defaults.conf.template spark-defaults.conf</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi spark-defaults.conf</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(13).png"></p>
+<p><img src="/../image/second/(13).png"></p>
 <p>4)配置 log4j.properties 文件第19行将INFO改为WARN<br>目的：输出日志, 设置级别为 WARN 只输出警告和错误日志，INFO 则为输出所有信息，多数为无用信息</p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(14).png"></p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(15).png"></p>
+<p><img src="/../image/second/(14).png"></p>
+<p><img src="/../image/second/(15).png"></p>
 <h2 id="6-将node1配置完成的spark分发到node2和node3上"><a href="#6-将node1配置完成的spark分发到node2和node3上" class="headerlink" title="6.将node1配置完成的spark分发到node2和node3上"></a>6.将node1配置完成的spark分发到node2和node3上</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server</span><br><span class="line">scp -r /export/server/spark-3.2.0-bin-hadoop3.2/ slave1:$PWD </span><br><span class="line">scp -r /export/server/spark-3.2.0-bin-hadoop3.2/ slave2:$PWD</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="7-在node2和node3添加spark软链接"><a href="#7-在node2和node3添加spark软链接" class="headerlink" title="7.在node2和node3添加spark软链接"></a>7.在node2和node3添加spark软链接</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /export/server/spark-3.2.0-bin-hadoop3.2 /export/server/spark</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(16).png"></p>
+<p><img src="/../image/second/(16).png"></p>
 <h2 id="8-启动历史服务并查看WebUI界面-18080-node1-18080"><a href="#8-启动历史服务并查看WebUI界面-18080-node1-18080" class="headerlink" title="8.启动历史服务并查看WebUI界面(18080 ##):  node1:18080"></a>8.启动历史服务并查看WebUI界面(18080 ##):  node1:18080</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/spark/sbin </span><br><span class="line">./start-history-server.sh</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(17).png"></p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(18).png"></p>
+<p><img src="/../image/second/(17).png"></p>
+<p><img src="/../image/second/(18).png"></p>
 <h2 id="9-启动Spark的Master和Worker进程"><a href="#9-启动Spark的Master和Worker进程" class="headerlink" title="9.启动Spark的Master和Worker进程"></a>9.启动Spark的Master和Worker进程</h2><p>cd &#x2F;export&#x2F;server&#x2F;spark&#x2F;sbin<br>启动全部master和worker：.&#x2F;start-all.sh<br>停止命令：.&#x2F;stop-all.sh<br>启动当前机器的master：.&#x2F;start-master.sh<br>启动当前机器的worker：.&#x2F;start-worker.sh<br>停止当前机器的master：.&#x2F;stop-master.sh<br>停止当前机器的worker：.&#x2F;stop-worker.sh</p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(19).png"></p>
+<p><img src="/../image/second/(19).png"></p>
 <p>访问WebUI界面：node1:8080(可能会顺延至8081)</p>
-<p><img src="https://github.com/zx-123-git/holle_world/tree/main/second/(20).png"></p>
+<p><img src="/../image/second/(20).png"></p>
 
       
     </div>
@@ -475,7 +475,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-25 10:41:53" itemprop="dateModified" datetime="2022-05-25T10:41:53+08:00">2022-05-25</time>
+                <time title="Modified: 2022-05-25 10:45:16" itemprop="dateModified" datetime="2022-05-25T10:45:16+08:00">2022-05-25</time>
               </span>
 
           
@@ -493,13 +493,13 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf jdk-8u241-linux-x64.tar.gz -C /export/server</span><br><span class="line">first/(1).png</span><br></pre></td></tr></table></figure>
 
 <h2 id="3-配置环境变量"><a href="#3-配置环境变量" class="headerlink" title="3.配置环境变量:"></a>3.配置环境变量:</h2><p><img src="/../image/first/(1).png"></p>
-<h2 id="4-java-version查看jdk版本"><a href="#4-java-version查看jdk版本" class="headerlink" title="4.java -version查看jdk版本"></a>4.java -version查看jdk版本</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(21).png"></p>
+<h2 id="4-java-version查看jdk版本"><a href="#4-java-version查看jdk版本" class="headerlink" title="4.java -version查看jdk版本"></a>4.java -version查看jdk版本</h2><p><img src="/../image/first/(21).png"></p>
 <h2 id="5-将node1中的java和环境变量传至node2和node3"><a href="#5-将node1中的java和环境变量传至node2和node3" class="headerlink" title="5.将node1中的java和环境变量传至node2和node3"></a>5.将node1中的java和环境变量传至node2和node3</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scp -r /export/server/jdk1.8.0_241 root@node2:/export/server</span><br><span class="line">scp -r /export/server/jdk1.8.0_241 root@node3:/export/server</span><br><span class="line">scp -r /etc/profile root@node2:/etc/profile</span><br><span class="line">scp -r /etc/profile root@node3:/etc/profile</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="6-在node1、node2、node3创建软链接"><a href="#6-在node1、node2、node3创建软链接" class="headerlink" title="6.在node1、node2、node3创建软链接"></a>6.在node1、node2、node3创建软链接</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /export/server/jdk1.8.0_241/ jdk</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(2).png" alt="images"></p>
+<p><img src="/../image/first/(2).png" alt="images"></p>
 <h2 id="7-在三台虚拟机上执行-source-x2F-etc-x2F-profile重载环境变量"><a href="#7-在三台虚拟机上执行-source-x2F-etc-x2F-profile重载环境变量" class="headerlink" title="7.在三台虚拟机上执行 source &#x2F;etc&#x2F;profile重载环境变量"></a>7.在三台虚拟机上执行 source &#x2F;etc&#x2F;profile重载环境变量</h2><h1 id="安装配置hadoop"><a href="#安装配置hadoop" class="headerlink" title="安装配置hadoop"></a>安装配置hadoop</h1><table>
 <thead>
 <tr>
@@ -526,22 +526,22 @@
 <h2 id="2-配置Hadoop环境变量"><a href="#2-配置Hadoop环境变量" class="headerlink" title="2.配置Hadoop环境变量"></a>2.配置Hadoop环境变量</h2><p>将Hadoop添加到环境变量</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line"></span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(3).png" alt="images"></p>
+<p><img src="/../image/first/(3).png" alt="images"></p>
 <h2 id="3-分发hadoop环境变量给node2、node3"><a href="#3-分发hadoop环境变量给node2、node3" class="headerlink" title="3.分发hadoop环境变量给node2、node3"></a>3.分发hadoop环境变量给node2、node3</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r /etc/profile root@node2:$PWD</span><br><span class="line">scp -r /etc/profile root@node3:$PWD</span><br></pre></td></tr></table></figure>
 
 
 
 <h2 id="4-相关配置"><a href="#4-相关配置" class="headerlink" title="4.相关配置"></a>4.相关配置</h2><p>（1）hadoop-env.sh</p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(4).png"></p>
+<p><img src="/../image/first/(4).png"></p>
 <p>（2）core-site.xml</p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(5).png"></p>
+<p><img src="/../image/first/(5).png"></p>
 <p>（3）hdfs-site.xml</p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(6).png"></p>
+<p><img src="/../image/first/(6).png"></p>
 <p>（4）mapred-site.xml</p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(7).png"></p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(8).png"></p>
+<p><img src="/../image/first/(7).png"></p>
+<p><img src="/../image/first/(8).png"></p>
 <p>（6）Workers（填写且仅保留以下内容）</p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(9).png"></p>
+<p><img src="/../image/first/(9).png"></p>
 <h2 id="5-分发同步hadoop安装包"><a href="#5-分发同步hadoop安装包" class="headerlink" title="5.分发同步hadoop安装包"></a>5.分发同步hadoop安装包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server</span><br><span class="line">scp -r hadoop-3.3.0 root@node2:$PWD</span><br><span class="line">scp -r hadoop-3.3.0 root@node3:$PWD</span><br></pre></td></tr></table></figure>
 
 
@@ -551,13 +551,13 @@
 <h2 id="7-脚本一键启动"><a href="#7-脚本一键启动" class="headerlink" title="7.脚本一键启动"></a>7.脚本一键启动</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start-dfs.sh</span><br><span class="line">start-yarn.sh</span><br></pre></td></tr></table></figure>
 
 <p>Jps：</p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(10).png"></p>
+<p><img src="/../image/first/(10).png"></p>
 <p>Web  UI页面</p>
 <ul>
 <li>HDFS集群：<a target="_blank" rel="noopener" href="http://node1:9870/">http://node1:9870/</a></li>
 <li>YARN集群：<a target="_blank" rel="noopener" href="http://node1:8088/">http://node1:8088/</a></li>
 </ul>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(11).png"></p>
+<p><img src="/../image/first/(11).png"></p>
 <h1 id="安装配置zookeeper"><a href="#安装配置zookeeper" class="headerlink" title="安装配置zookeeper"></a>安装配置zookeeper</h1><h2 id="1-配置hosts：（三台服务器均需修改）"><a href="#1-配置hosts：（三台服务器均需修改）" class="headerlink" title="1.配置hosts：（三台服务器均需修改）"></a>1.配置hosts：（三台服务器均需修改）</h2><table>
 <thead>
 <tr>
@@ -584,25 +584,25 @@
 </tbody></table>
 <h2 id="2-上传zookeeper安装包、解压安装包"><a href="#2-上传zookeeper安装包、解压安装包" class="headerlink" title="2.上传zookeeper安装包、解压安装包"></a>2.上传zookeeper安装包、解压安装包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /export/software</span><br><span class="line">tar -zxvf zookeeper.tar.gz -C /export/server/</span><br><span class="line">cd /export/server/</span><br><span class="line">ln -s zookeeper/ zookeeper</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(12).png"></p>
+<p><img src="/../image/first/(12).png"></p>
 <h2 id="3-修改配置文件"><a href="#3-修改配置文件" class="headerlink" title="3.修改配置文件"></a>3.修改配置文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  (1)复制zoo.cfg / 配置zoo.cfg</span><br><span class="line">cd /export/server/zookeeper/conf/</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(13).png"></p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(14).png"></p>
+<p><img src="/../image/first/(13).png"></p>
+<p><img src="/../image/first/(14).png"></p>
 <h2 id="4-添加myid配置"><a href="#4-添加myid配置" class="headerlink" title="4.添加myid配置"></a>4.添加myid配置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /export/server/zookeeper/zkdatas/</span><br><span class="line">echo 1 &gt; /export/server/zookeeper/zkdatas/myid</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(15).png"></p>
+<p><img src="/../image/first/(15).png"></p>
 <h2 id="5-分发并修改myid的值"><a href="#5-分发并修改myid的值" class="headerlink" title="5.分发并修改myid的值"></a>5.分发并修改myid的值</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /export/server/</span><br><span class="line">scp -r /export/server/zookeeper-3.4.6/ node2:$PWD </span><br><span class="line">scp -r /export/server/zookeeper-3.4.6/ node3:$PWD</span><br></pre></td></tr></table></figure>
 
 
-<h2 id="6-对node2和node3进行软连接并对myid进行修改"><a href="#6-对node2和node3进行软连接并对myid进行修改" class="headerlink" title="6.对node2和node3进行软连接并对myid进行修改"></a>6.对node2和node3进行软连接并对myid进行修改</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(16).png"></p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(17).png"></p>
-<h2 id="7-配置环境变量、脚本一键启动zookeeper"><a href="#7-配置环境变量、脚本一键启动zookeeper" class="headerlink" title="7.配置环境变量、脚本一键启动zookeeper"></a>7.配置环境变量、脚本一键启动zookeeper</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(18).png"></p>
+<h2 id="6-对node2和node3进行软连接并对myid进行修改"><a href="#6-对node2和node3进行软连接并对myid进行修改" class="headerlink" title="6.对node2和node3进行软连接并对myid进行修改"></a>6.对node2和node3进行软连接并对myid进行修改</h2><p><img src="/../image/first/(16).png"></p>
+<p><img src="/../image/first/(17).png"></p>
+<h2 id="7-配置环境变量、脚本一键启动zookeeper"><a href="#7-配置环境变量、脚本一键启动zookeeper" class="headerlink" title="7.配置环境变量、脚本一键启动zookeeper"></a>7.配置环境变量、脚本一键启动zookeeper</h2><p><img src="/../image/first/(18).png"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
 
 <p>一键启动zookeeper脚本</p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(19).png"></p>
-<p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(20).png"></p>
+<p><img src="/../image/first/(19).png"></p>
+<p><img src="/../image/first/(20).png"></p>
 
       
     </div>
