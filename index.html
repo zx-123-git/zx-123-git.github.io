@@ -475,7 +475,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-25 10:33:59" itemprop="dateModified" datetime="2022-05-25T10:33:59+08:00">2022-05-25</time>
+                <time title="Modified: 2022-05-25 10:41:53" itemprop="dateModified" datetime="2022-05-25T10:41:53+08:00">2022-05-25</time>
               </span>
 
           
@@ -492,8 +492,8 @@
           <h1 id="安装配置JDK"><a href="#安装配置JDK" class="headerlink" title="安装配置JDK"></a>安装配置JDK</h1><h2 id="1-mkdir-pv-创建软件安装目录-x2F-export-x2F-server"><a href="#1-mkdir-pv-创建软件安装目录-x2F-export-x2F-server" class="headerlink" title="1.mkdir -pv 创建软件安装目录 &#x2F;export&#x2F;server"></a>1.mkdir -pv 创建软件安装目录 &#x2F;export&#x2F;server</h2><h2 id="2-将jdk-8u241-linux-x64-tar-gz-上传并解解压至"><a href="#2-将jdk-8u241-linux-x64-tar-gz-上传并解解压至" class="headerlink" title="2.将jdk-8u241-linux-x64.tar.gz 上传并解解压至"></a>2.将jdk-8u241-linux-x64.tar.gz 上传并解解压至</h2><p>&#x2F;export&#x2F;server 命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf jdk-8u241-linux-x64.tar.gz -C /export/server</span><br><span class="line">first/(1).png</span><br></pre></td></tr></table></figure>
 
-<h2 id="3-配置环境变量"><a href="#3-配置环境变量" class="headerlink" title="3.配置环境变量:"></a>3.配置环境变量:</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(1).png" alt="image"></p>
-<h2 id="4-java-version查看jdk版本"><a href="#4-java-version查看jdk版本" class="headerlink" title="4.java -version查看jdk版本"></a>4.java -version查看jdk版本</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(21).png" alt="images"></p>
+<h2 id="3-配置环境变量"><a href="#3-配置环境变量" class="headerlink" title="3.配置环境变量:"></a>3.配置环境变量:</h2><p><img src="/../image/first/(1).png"></p>
+<h2 id="4-java-version查看jdk版本"><a href="#4-java-version查看jdk版本" class="headerlink" title="4.java -version查看jdk版本"></a>4.java -version查看jdk版本</h2><p><img src="https://github.com/zx-123-git/holle_world/blob/main/first/(21).png"></p>
 <h2 id="5-将node1中的java和环境变量传至node2和node3"><a href="#5-将node1中的java和环境变量传至node2和node3" class="headerlink" title="5.将node1中的java和环境变量传至node2和node3"></a>5.将node1中的java和环境变量传至node2和node3</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scp -r /export/server/jdk1.8.0_241 root@node2:/export/server</span><br><span class="line">scp -r /export/server/jdk1.8.0_241 root@node3:/export/server</span><br><span class="line">scp -r /etc/profile root@node2:/etc/profile</span><br><span class="line">scp -r /etc/profile root@node3:/etc/profile</span><br></pre></td></tr></table></figure>
 
 
