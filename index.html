@@ -145,6 +145,348 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/05/kafka%E7%94%9F%E4%BA%A7%E8%80%85API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/05/kafka%E7%94%9F%E4%BA%A7%E8%80%85API/" class="post-title-link" itemprop="url">kafka生产者API</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-05 13:19:26 / Modified: 13:30:31" itemprop="dateCreated datePublished" datetime="2022-06-05T13:19:26+08:00">2022-06-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一．生产者API</p>
+<p><img src="/../image/kafka/third/(1).png" alt="img"> </p>
+<p>\1. 新建Maven项目，配置pom.xml</p>
+<p><img src="/../image/kafka/third/(2).png" alt="img"></p>
+<p><img src="/../image/kafka/third/(3).png" alt="img"> </p>
+<p>\2. 新建ProducerDemo类，ProducerCallbackDemo类</p>
+<p><img src="/../image/kafka/third/(4).png" alt="img"></p>
+<p><img src="/../image/kafka/third/(5).png" alt="img"></p>
+<p><img src="/../image/kafka/third/(6).png" alt="img"></p>
+<p><img src="/../image/kafka/third/(7).png" alt="img"> </p>
+<p>\3. 生产者原理</p>
+<p><img src="/../image/kafka/third/(8).png" alt="img"> </p>
+<p>（1）Kafka生产者有两个线程，一个为主线程，一个为Sender线程（它是一个守护线程）</p>
+<p>（2）消息发送后首先经历拦截器，在拦截器中可以对消息做一些统一的操作，比如：加上统一的标识，然后会被序列化为字节流</p>
+<p>（3）到达分区器，分区器主要是对消息去哪个分区做规划</p>
+<p>（4）做好分区规划后，消息到达了消息累加器，累加器是一个双端队列（每一个队列对应一个分区），然后将消息封装到ProducerBatch,ProducerBatch也是一个多消息的容器，它是可以不断想里面加入消息的。让消息变成一批次，一批次的。</p>
+<p>（5）Sender线程主动从消息累加器中取消息，然后将上一步Deque&lt;partitionId,ProducerBatch&gt;转换为&lt;Node,List&gt;的形式，然后再将其转换为&lt;Node,Request&gt;,这一步是将Kafka消息从逻辑上转换为物理上的主要转折点。从这步开始，就不会关心分区这个逻辑概念，只会注意要发向哪一台机器了</p>
+<p>（6）在发送之前，还会将消息转换为Map&lt;Node,Dequen【Requst】&gt;</p>
+<p>（7）保存在InFlightRequst中，表示消息发送等待回应</p>
+<p>（8）消息发最终由Selector发送</p>
+<p>\4. 重要的生产者参数</p>
+<p><strong>１.</strong> <em><strong>*acks*</strong></em><br>这个参数主要用来指定分区中必须要有多少个副本都收到这个消息，生产者客户端才认为这条消息成功写入。它涉及消息的可靠性和吞吐量之间的权衡。acks参数有3种类型的值（都是字符串类型）</p>
+<p><strong>２.</strong> <em><strong>*max.request.size*</strong></em><br>这个参数用来限制生产者客户端所能发送消息的最大值</p>
+<p><strong>３.</strong> <em><strong>*retry.backoff.ms和*</strong></em><br>retries 参数用来配置生产者重试的次数，默认值为0，也就是说在发生异常的时候不进行重试。</p>
+<p><strong>４.</strong> <em><strong>*compression.type*</strong></em><br>这个参数用来指定消息的压缩放方式，默认值是“none”,即默认情况下，消息不会被压缩。</p>
+<p><strong>５.</strong> <em><strong>*connections.*</strong></em> <a target="_blank" rel="noopener" href="http://max.ides.ms/"><em><strong>*max.ides.ms*</strong></em></a><br>这个参数用来指定在多久之后关闭闲置连接</p>
+<p><strong>６.</strong> <a target="_blank" rel="noopener" href="http://6.linger.ms/"><em><strong>*linger.ms*</strong></em></a><br>这个参数用来指定生产者发送 ProducerBatch 之前等待更多的消息（ProducerRecord）加入 ProducerBatch 的时间</p>
+<p><strong>７.</strong> <em><strong>*receive.buffer.bytes*</strong></em><br>这个参数用来设置 Socket 接收消息缓冲区（SO_RECBUF）的大小</p>
+<p><strong>８.</strong> <em><strong>*send.buffer.bytes*</strong></em><br>这个参数用来设置 Socket 发送消息缓冲区（SO_SNDBUF）的大小</p>
+<p><strong>９.</strong> <a target="_blank" rel="noopener" href="http://9.request.timeout.ms/"><em><strong>*request.timeout.ms*</strong></em></a><br>这个参数用来配置 Producer 等待请求响应的最长时间</p>
+<p>二．消费者API</p>
+<p>\1. 一个正常的消费逻辑需要具备以下几个步骤: </p>
+<p>(1)配置消费者客户端参数</p>
+<p>(2)创建相应的消费者实例; </p>
+<p>(3)订阅主题; </p>
+<p>(4)拉取消息并消费; </p>
+<p>(5)提交消费位移 offset;</p>
+<p>(6)关闭消费者实例。</p>
+<p>\2. subscribe 有如下重载方法: </p>
+<p><img src="/../image/kafka/third/(9).png" alt="img"> </p>
+<p>\3. 正则方式订阅主题</p>
+<p>如果消费者采用的是正则表达式的方式(subscribe(Pattern))订阅, 在之后的过程中,如果有人又创建了新的主题,并且主题名字与正表达式相匹配,那么这个消费者就可以消费到新添加的主题中的消息。如果应用程序需要消费多个主题,并且可以处理不同的类型,那么这种订阅方式就很有效。</p>
+<p>\4. assign 订阅主题</p>
+<p>这个方法只接受参数 partitions,用来指定需要订阅的分区集合</p>
+<p>\5. subscribe 与 assign 的区别</p>
+<p>(1)通过 subscribe()方法订阅主题具有消费者自动再均衡功能 ; </p>
+<p>在多个消费者的情况下可以根据分区分配策略来自动分配各个消费者与分区的关系。 </p>
+<p>当消费组的消费者增加或减少时,分区分配关系会自动调整,以实现消费负载均衡及故障自动转移。</p>
+<p>(2)assign() 方法订阅分区时,是不具备消费者自动均衡的功能的; </p>
+<p>其实这一点从 assign()方法参数可以看出端倪,两种类型 subscribe()都有 ConsumerRebalanceListener 类型参数的方法,而 assign()方法却没有。</p>
+<p>\6. 消息的消费模式</p>
+<p>Kafka 中的消费是基于拉取模式的。消息的消费一般有两种模式:推送模式和拉取模式。</p>
+<p>推模式是服务端主动将消息推送给消费者,而拉模式是消费者主动向服务端发起请求来拉取消息</p>
+<p>Kafka 中的消息消费是一个不断轮询的过程,消费者所要做的就是重复地调用 poll() 方法, poll() 方法返回的是所订阅的主题(分区)上的一组消息。</p>
+<p>\7. 指定位移消费</p>
+<p>seek() 方法:从特定的位移处开始拉取消息</p>
+<p>\8. 再均衡监听器</p>
+<p>一个消费组中,一旦有消费者的增减发生,会触发消费者组的 rebalance 再均衡; </p>
+<p>如果 A 消费者消费掉的一批消息还没来得及提交 offset, 而它所负责的分区在 rebalance 中转移给了 B 消费者,则有可能发生数据的重复消费处理。此情形下,可以通过再均衡监听器做一定程度的补救;</p>
+<p>\9. 自动位移提交</p>
+<p>Kafka 消费的编程逻辑中位移提交是一大难点,自动提交消费位移的方式非常简便,它免去了复杂的位移提交逻辑,让编码更简洁。但随之而来的是重复消费和消息丢失的问题。</p>
+<p>(1)重复消费</p>
+<p>假设刚刚提交完一次消费位移,然后拉取一批消息进行消费,在下一次自动提交消费位移之前,消费者崩溃了,那么又得从上一次位移提交的地方重新开始消费,这样便发生了重复消费的现象(对于再均衡的情况同样适用)。我们可以通过减小位移提交的时间间隔来减小重复消息的窗口大小,但这样并不能避免重复消费的发送,而且也会使位移提交更加频繁。</p>
+<p>(2)丢失消息</p>
+<p>拉取线程不断地拉取消息并存入本地缓存, 比如在 BlockingQueue 中, 另一个处理线程从缓存中读取消息并进行相应的逻辑处理</p>
+<p>\10. 新建ConsumerDemo，ConsumerDemo1，ConsumerTask，ConsumerDemo2，ConsumerSeekOffset类</p>
+<p><img src="/../image/kafka/third/(10).png" alt="img"></p>
+<p><img src="/../image/kafka/third/(11).png" alt="img"></p>
+<p><img src="/../image/kafka/third/(12).png" alt="img"></p>
+<p>三．Topic管理API</p>
+<p>\1. KafkaAdminClient 不仅可以用来管理 broker、配置和 ACL (Access Control List),还可用来管理主题)它提供了以下方法:</p>
+<p><img src="/../image/kafka/third/(13).png" alt="img"> </p>
+<p>\2. 新建KafkAdminDemo，CallableDemo类</p>
+<p><img src="/../image/kafka/third/(14).png" alt="img"> </p>
+<p><img src="/../image/kafka/third/(15).png" alt="img"> </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/05/kafka%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/05/kafka%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">kafka命令行操作</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-05 13:19:11 / Modified: 13:25:47" itemprop="dateCreated datePublished" datetime="2022-06-05T13:19:11+08:00">2022-06-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一．Kafka命令行操作</p>
+<p>\1. 查看当前可用topic</p>
+<p><img src="/../image/kafka/second/(1).png" alt="img"> </p>
+<p>\2. 创建topic，检查是否创建成功</p>
+<p><img src="/../image/kafka/second/(2).png" alt="img"> </p>
+<p>\3. 手动指定副本的存储位置，进入&#x2F;export&#x2F;data&#x2F;kafka-logs路径下查看分区的分布</p>
+<p><img src="/../image/kafka/second/(3).png" alt="img"><img src="/../image/kafka/second/(4).png" alt="img"> </p>
+<p>\4. 删除topic，检查是否成功</p>
+<p><img src="/../image/kafka/second/(5).png" alt="img"> </p>
+<p>\5. 查看topic详情</p>
+<p><img src="/../image/kafka/second/(6).png" alt="img"> </p>
+<p>\6. 生产者写入数据，消费者拉取数据</p>
+<p><img src="/../image/kafka/second/(7).png" alt="img"> </p>
+<p><img src="/../image/kafka/second/(8).png" alt="img"> </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/05/kafka%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/05/kafka%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">kafka环境配置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-05 13:18:49 / Modified: 13:23:22" itemprop="dateCreated datePublished" datetime="2022-06-05T13:18:49+08:00">2022-06-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一．Kafka环境配置</p>
+<p>\1. 上传压缩包到&#x2F;export&#x2F;server</p>
+<p><img src="/../image/kafka/first/(1).png" alt="img"> </p>
+<p>\2. 配置server.properties</p>
+<p><img src="/../image/kafka/first/(2).png" alt="img"> </p>
+<p><img src="/../image/kafka/first/(3).png" alt="img"> </p>
+<p><img src="/../image/kafka/first/(4).png" alt="img"> </p>
+<p><img src="/../image/kafka/first/(6).png" alt="img"><img src="/../image/kafka/first/(6).png" alt="img"><img src="/../image/kafka/first/(7).png" alt="img"> </p>
+<p><img src="/../image/kafka/first/(8).png" alt="img"> </p>
+<p>\3. 分发Kafka</p>
+<p><img src="/../image/kafka/first/(9).png" alt="img"> </p>
+<p><img src="/../image/kafka/first/(10).png" alt="img"> </p>
+<p>\4. 配置环境变量</p>
+<p><img src="/../image/kafka/first/(11).png" alt="img"> </p>
+<p>\5. 加载环境变量</p>
+<p><img src="/../image/kafka/first/(12).png" alt="img"> </p>
+<p>\6. 修改node02和node03中的service.properties中的broker.id</p>
+<p><img src="/../image/kafka/first/(13).png" alt="img"> </p>
+<p><img src="/../image/kafka/first/(14).png" alt="img"> </p>
+<p>\7. 启动Kafka</p>
+<p><img src="/../image/kafka/first/(15).png" alt="img"> </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/01/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98/" class="post-title-link" itemprop="url">每日一题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-01 16:28:55 / Modified: 16:29:11" itemprop="dateCreated datePublished" datetime="2022-06-01T16:28:55+08:00">2022-06-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/20/%E3%80%8ASpark-HA-Yarn%E9%85%8D%E7%BD%AE%E3%80%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -684,7 +1026,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
